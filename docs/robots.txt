@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://karthigamurugadoss.github.io/pixabay-image-downloader/sitemap.xml
+Sitemap: https://karthigamurugadoss.github.io/imnexa-image-downloader/sitemap.xml

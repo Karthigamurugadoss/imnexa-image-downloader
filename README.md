@@ -1,9 +1,11 @@
 <p align="center">
-  <img src="docs/screenshots/banner.jpg" alt="PixFind — free Pixabay image search and downloader" width="100%">
+  <img src="docs/screenshots/banner.jpg" alt="Imnexa – Image Search & Downloader" width="100%">
 </p>
 
+<h1 align="center">Imnexa – Image Search &amp; Downloader</h1>
+
 <p align="center">
-  <strong>Free, open-source Pixabay image search and downloader.</strong><br>
+  <strong>Free, open-source image search and downloader powered by the Pixabay API.</strong><br>
   Search millions of royalty-free photos, illustrations and vectors, preview them, and download full resolution.<br>
   Built with Python Flask. Self-hosted. Dark UI.
 </p>
@@ -13,13 +15,13 @@
   <a href="https://flask.palletsprojects.com"><img src="https://img.shields.io/badge/Flask-Web_Framework-000000?logo=flask&logoColor=white" alt="Flask"></a>
   <a href="https://pixabay.com/api/docs/"><img src="https://img.shields.io/badge/Pixabay-API-48a14d?logo=pixabay&logoColor=white" alt="Pixabay API"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
-  <a href="https://github.com/Karthigamurugadoss/pixabay-image-downloader/releases/latest"><img src="https://img.shields.io/github/v/release/Karthigamurugadoss/pixabay-image-downloader?color=ffb547" alt="Latest release"></a>
-  <a href="https://github.com/Karthigamurugadoss/pixabay-image-downloader/stargazers"><img src="https://img.shields.io/github/stars/Karthigamurugadoss/pixabay-image-downloader?style=social" alt="Stars"></a>
-  <a href="https://karthigamurugadoss.github.io/pixabay-image-downloader/"><img src="https://img.shields.io/badge/Website-Live-ffb547?logo=googlechrome&logoColor=white" alt="Website"></a>
+  <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/releases/latest"><img src="https://img.shields.io/github/v/release/Karthigamurugadoss/imnexa-image-downloader?color=ffb547" alt="Latest release"></a>
+  <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/stargazers"><img src="https://img.shields.io/github/stars/Karthigamurugadoss/imnexa-image-downloader?style=social" alt="Stars"></a>
+  <a href="https://karthigamurugadoss.github.io/imnexa-image-downloader/"><img src="https://img.shields.io/badge/Website-Live-ffb547?logo=googlechrome&logoColor=white" alt="Website"></a>
 </p>
 
 <p align="center">
-  <a href="https://karthigamurugadoss.github.io/pixabay-image-downloader/">Website</a> &nbsp;&middot;&nbsp;
+  <a href="https://karthigamurugadoss.github.io/imnexa-image-downloader/">Website</a> &nbsp;&middot;&nbsp;
   <a href="#features">Features</a> &nbsp;&middot;&nbsp;
   <a href="#getting-started">Getting Started</a> &nbsp;&middot;&nbsp;
   <a href="#usage">Usage</a> &nbsp;&middot;&nbsp;
@@ -30,11 +32,11 @@
 
 ---
 
-**PixFind** is a modern, self-hosted web app for finding and downloading free stock images. It uses the official [Pixabay API](https://pixabay.com/api/docs/) to search **photos, illustrations and vectors**, shows the results in a true-proportion masonry grid, lets you inspect any picture in a built-in viewer, and downloads the **full-resolution file** with one click.
+**Imnexa** is a modern, self-hosted web app for finding and downloading free stock images. It uses the official [Pixabay API](https://pixabay.com/api/docs/) to search **photos, illustrations and vectors**, shows the results in a true-proportion masonry grid, lets you inspect any picture in a built-in viewer, and downloads the **full-resolution file** with one click.
 
 It is a small Flask app with no build step, so you can read all of it in a few minutes.
 
-> **Note:** Images come from [Pixabay](https://pixabay.com) and are covered by the [Pixabay Content License](https://pixabay.com/service/license-summary/). PixFind is an independent project and is not affiliated with Pixabay.
+> **Note:** Images come from [Pixabay](https://pixabay.com) and are covered by the [Pixabay Content License](https://pixabay.com/service/license-summary/). Imnexa is an independent project and is not affiliated with Pixabay.
 
 ---
 
@@ -42,18 +44,18 @@ It is a small Flask app with no build step, so you can read all of it in a few m
 
 | Search | Results & hover download |
 |:---:|:---:|
-| ![PixFind home screen with search bar and filters](docs/screenshots/pixfind-hero.jpg) | ![PixFind masonry results grid](docs/screenshots/pixfind-results.jpg) |
+| ![Imnexa home screen with search bar and filters](docs/screenshots/imnexa-hero.jpg) | ![Imnexa masonry results grid](docs/screenshots/imnexa-results.jpg) |
 
 | Picture viewer |
 |:---:|
-| ![PixFind picture viewer with stats and download button](docs/screenshots/pixfind-viewer.jpg) |
+| ![Imnexa picture viewer with stats and download button](docs/screenshots/imnexa-viewer.jpg) |
 
 <details>
 <summary><strong>Mobile view</strong></summary>
 <br>
 
 <p align="center">
-  <img src="docs/screenshots/pixfind-mobile.jpg" alt="PixFind on mobile" width="300">
+  <img src="docs/screenshots/imnexa-mobile.jpg" alt="Imnexa on mobile" width="300">
 </p>
 </details>
 
@@ -67,6 +69,7 @@ It is a small Flask app with no build step, so you can read all of it in a few m
 - **Built-in viewer** with resolution, views, likes and downloads, plus keyboard navigation (`←` `→` `Esc`)
 - **True-proportion masonry grid** with skeleton loading and a "Show more pictures" button
 - **Shareable searches**: every search has a link such as `/?q=mountain`
+- **24-hour search cache**: repeat searches are instant and save your API rate limit (Pixabay's API terms require caching)
 - **Dark, responsive UI** that works from phone to ultrawide, with a sticky compact search
 - **Secure by default**: API key stays on the server, strict CSP, Pixabay-only download proxy
 
@@ -104,8 +107,8 @@ It is a small Flask app with no build step, so you can read all of it in a few m
 
 ```bash
 # Clone the repository
-git clone https://github.com/Karthigamurugadoss/pixabay-image-downloader.git
-cd pixabay-image-downloader
+git clone https://github.com/Karthigamurugadoss/imnexa-image-downloader.git
+cd imnexa-image-downloader
 
 # Install dependencies
 pip install -r requirements.txt
@@ -151,7 +154,7 @@ Searches update the URL, so you can bookmark or send a link like `http://127.0.0
 
 ## Security
 
-PixFind is designed so there is little to get wrong. Full details are in [SECURITY.md](SECURITY.md).
+Imnexa is designed so there is little to get wrong. Full details are in [SECURITY.md](SECURITY.md).
 
 - The **API key never reaches the browser** and never appears in error messages
 - `/download` only fetches **`https` Pixabay image URLs**, with no redirects, `image/*` only and a 30 MB limit
@@ -167,7 +170,7 @@ PixFind is designed so there is little to get wrong. Full details are in [SECURI
 ## Project Structure
 
 ```
-pixabay-image-downloader/
+imnexa-image-downloader/
 ├── app.py                  # Flask backend: search, download proxy, security headers
 ├── templates/
 │   └── index.html          # App UI markup
@@ -191,7 +194,7 @@ pixabay-image-downloader/
 ## FAQ
 
 <details>
-<summary><strong>Is PixFind free?</strong></summary>
+<summary><strong>Is Imnexa free?</strong></summary>
 <br>
 Yes. It is open source under the MIT license, and the Pixabay API is free with a free key.
 </details>
@@ -262,7 +265,7 @@ Built by **[Karthigamurugadoss](https://github.com/Karthigamurugadoss)**
 
 <p align="center">
   <br>
-  <a href="https://github.com/Karthigamurugadoss/pixabay-image-downloader/stargazers"><img src="https://img.shields.io/github/stars/Karthigamurugadoss/pixabay-image-downloader?style=for-the-badge&logo=github&label=Star%20this%20repo&color=ffb547" alt="Star"></a>
+  <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/stargazers"><img src="https://img.shields.io/github/stars/Karthigamurugadoss/imnexa-image-downloader?style=for-the-badge&logo=github&label=Star%20this%20repo&color=ffb547" alt="Star"></a>
   <br><br>
-  <sub>If PixFind saved you time, a star helps others find it too.</sub>
+  <sub>If Imnexa saved you time, a star helps others find it too.</sub>
 </p>

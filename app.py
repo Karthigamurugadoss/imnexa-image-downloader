@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify, send_file
 from dotenv import load_dotenv
 import requests
 import os
+import threading
+import time
 from io import BytesIO
 from urllib.parse import urlparse
 
@@ -16,6 +18,33 @@ PER_PAGE = 20
 MAX_QUERY_LENGTH = 100                      # Pixabay rejects longer queries
 MAX_PAGE = 500 // PER_PAGE                  # Pixabay only serves the first 500 hits
 MAX_DOWNLOAD_BYTES = 30 * 1024 * 1024       # refuse to proxy anything bigger than 30 MB
+
+# Pixabay's API terms require search requests to be cached for 24 hours.
+CACHE_TTL_SECONDS = 24 * 60 * 60
+CACHE_MAX_ENTRIES = 500
+_search_cache = {}                          # key -> (expires_at, payload)
+_cache_lock = threading.Lock()
+
+
+def cache_get(key):
+    with _cache_lock:
+        entry = _search_cache.get(key)
+        if entry and entry[0] > time.time():
+            return entry[1]
+        _search_cache.pop(key, None)
+        return None
+
+
+def cache_set(key, payload):
+    with _cache_lock:
+        if len(_search_cache) >= CACHE_MAX_ENTRIES:
+            now = time.time()
+            for stale in [k for k, (expires, _) in _search_cache.items() if expires <= now]:
+                del _search_cache[stale]
+            if len(_search_cache) >= CACHE_MAX_ENTRIES:
+                # still full: drop the entry that expires soonest (the oldest)
+                del _search_cache[min(_search_cache, key=lambda k: _search_cache[k][0])]
+        _search_cache[key] = (time.time() + CACHE_TTL_SECONDS, payload)
 
 # Everything the page loads: own files, Google Fonts, and Pixabay images.
 CONTENT_SECURITY_POLICY = "; ".join([
@@ -82,6 +111,12 @@ def search():
         "page": page
     }
 
+    # The cache key leaves out the API key on purpose
+    cache_key = (query.lower(), image_type, orientation, page)
+    cached = cache_get(cache_key)
+    if cached is not None:
+        return jsonify(cached)
+
     try:
         response = requests.get(
             PIXABAY_URL,
@@ -125,11 +160,15 @@ def search():
                 "downloads": image.get("downloads")
             })
 
-        return jsonify({
+        payload = {
             "success": True,
             "total": data.get("total", 0),
             "images": images
-        })
+        }
+
+        cache_set(cache_key, payload)
+
+        return jsonify(payload)
 
     except requests.exceptions.RequestException as e:
         # Don't echo the exception text: it contains the request URL, including the API key
@@ -185,7 +224,7 @@ def download():
             BytesIO(bytes(body)),
             mimetype=content_type,
             as_attachment=True,
-            download_name=f"pixfind-{image_id}{extension}"
+            download_name=f"imnexa-{image_id}{extension}"
         )
 
     except requests.exceptions.RequestException as e:

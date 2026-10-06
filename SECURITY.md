@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Please report security issues privately through
-[GitHub's private vulnerability reporting](https://github.com/Karthigamurugadoss/pixabay-image-downloader/security/advisories/new)
+[GitHub's private vulnerability reporting](https://github.com/Karthigamurugadoss/imnexa-image-downloader/security/advisories/new)
 rather than opening a public issue. You can expect a reply within a few days.
 
 ## What the app does to stay safe
@@ -14,6 +14,7 @@ rather than opening a public issue. You can expect a reply within a few days.
 - **No HTML injection.** Results are rendered with DOM APIs (`textContent`), not by concatenating untrusted strings into HTML.
 - **Inputs are validated.** Filters are checked against allow-lists, the query is capped at 100 characters and the page number is bounded.
 - **Debug mode is off by default.** The Werkzeug debugger allows code execution, so it only runs when you set `FLASK_DEBUG=1`.
+- **Searches are cached for 24 hours** in memory (as Pixabay's API terms require). The cache key never includes the API key.
 - **Dependencies are audited** with `pip-audit` (no known vulnerabilities at release time).
 
 ## Running it safely
