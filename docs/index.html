@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixFind — Free Pixabay Image Search &amp; Downloader | Open-Source Flask App</title>
+    <meta name="description" content="PixFind is a free, open-source, self-hosted image search and downloader built on the Pixabay API. Search millions of royalty-free photos, illustrations and vectors, preview them and download full resolution. Python Flask, dark UI, MIT licensed.">
+    <meta name="keywords" content="pixabay image downloader, pixabay downloader, free image search, royalty free images, stock photo downloader, pixabay api, flask app, python, open source, self-hosted, image search engine, photo downloader, vector downloader, illustration downloader, pixfind">
+    <meta name="author" content="Karthigamurugadoss">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#0b0c0f">
+    <meta name="color-scheme" content="dark">
+    <link rel="canonical" href="https://karthigamurugadoss.github.io/pixabay-image-downloader/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PixFind — Free Pixabay Image Search &amp; Downloader">
+    <meta property="og:description" content="Search millions of free photos, illustrations and vectors and download them in full resolution. Self-hosted, open source, MIT licensed.">
+    <meta property="og:url" content="https://karthigamurugadoss.github.io/pixabay-image-downloader/">
+    <meta property="og:image" content="https://karthigamurugadoss.github.io/pixabay-image-downloader/screenshots/social-preview.jpg">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="640">
+    <meta property="og:image:alt" content="PixFind — Good pictures, quietly found. A dark image search app with a masonry grid of mountain photos.">
+    <meta property="og:site_name" content="PixFind">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PixFind — Free Pixabay Image Search &amp; Downloader">
+    <meta name="twitter:description" content="Search millions of free images and download them in full resolution. Free, self-hosted, open source.">
+    <meta name="twitter:image" content="https://karthigamurugadoss.github.io/pixabay-image-downloader/screenshots/social-preview.jpg">
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "SoftwareApplication",
+                "name": "PixFind",
+                "alternateName": "Pixabay Image Downloader",
+                "description": "Free, open-source, self-hosted image search and downloader built on the Pixabay API. Search photos, illustrations and vectors, preview them in a viewer and download full-resolution files.",
+                "applicationCategory": "MultimediaApplication",
+                "operatingSystem": "Windows, macOS, Linux",
+                "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+                "author": { "@type": "Person", "name": "Karthigamurugadoss", "url": "https://github.com/Karthigamurugadoss" },
+                "license": "https://opensource.org/licenses/MIT",
+                "url": "https://karthigamurugadoss.github.io/pixabay-image-downloader/",
+                "downloadUrl": "https://github.com/Karthigamurugadoss/pixabay-image-downloader/releases",
+                "codeRepository": "https://github.com/Karthigamurugadoss/pixabay-image-downloader",
+                "screenshot": "https://karthigamurugadoss.github.io/pixabay-image-downloader/screenshots/pixfind-hero.jpg",
+                "softwareVersion": "1.0.0",
+                "programmingLanguage": ["Python", "JavaScript", "HTML", "CSS"]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Is PixFind free?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Yes. PixFind is open source under the MIT license and the Pixabay API is free to use with a free API key." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "How do I get a Pixabay API key?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Create a free Pixabay account, open pixabay.com/api/docs and copy your key. Paste it into a .env file as PIXABAY_API_KEY and start the app." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Can I use the downloaded images commercially?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Pixabay content is released under the Pixabay Content License, which allows free commercial use without attribution in most cases. Always check the license summary on Pixabay for restrictions such as identifiable people or trademarks." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is my API key safe?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "The key is only read on the server from your .env file and is never sent to the browser. The .env file is git-ignored, error messages never include it, and the download route only proxies Pixabay image URLs." }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Why is the number of results capped at 500?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "The Pixabay API only returns the first 500 hits for any search query. Refine your search or use the type and shape filters to narrow results." }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #0b0c0f;
+            --surface: #14161b;
+            --surface-2: #1c1f26;
+            --line: #272b34;
+            --text: #ecebe6;
+            --muted: #8c8f9a;
+            --accent: #ffb547;
+            --accent-ink: #1a1205;
+            --serif: "Instrument Serif", Georgia, serif;
+            --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+            --mono: "Geist Mono", ui-monospace, Consolas, monospace;
+            --gutter: clamp(18px, 5vw, 64px);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; color-scheme: dark; scroll-padding-top: 80px; }
+        body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { color: inherit; }
+        img { max-width: 100%; height: auto; display: block; }
+        ::selection { background: var(--accent); color: var(--accent-ink); }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+        svg { width: 20px; height: 20px; flex: none; }
+
+        .wrap { max-width: 1160px; margin: 0 auto; padding: 0 var(--gutter); }
+        section { padding: clamp(56px, 9vw, 110px) 0; }
+
+        /* nav */
+        nav { position: sticky; top: 0; z-index: 30; background: rgba(11, 12, 15, 0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+        .nav-in { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
+        .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 28px; text-decoration: none; line-height: 1; }
+        .mark { width: 12px; height: 12px; border-radius: 3px; background: var(--accent); transform: rotate(45deg); box-shadow: 0 0 18px rgba(255, 181, 71, .55); }
+        .links { display: flex; align-items: center; gap: 28px; font-size: 14.5px; color: var(--muted); }
+        .links a { text-decoration: none; transition: color .15s; }
+        .links a:hover { color: var(--text); }
+        .gh { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); background: var(--surface); }
+        .gh:hover { border-color: var(--accent); }
+
+        /* buttons */
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 15px; text-decoration: none; transition: transform .15s, background .15s, border-color .15s; }
+        .btn:active { transform: scale(.97); }
+        .btn-primary { background: var(--accent); color: var(--accent-ink); }
+        .btn-primary:hover { background: #ffc470; }
+        .btn-ghost { border: 1px solid var(--line); background: var(--surface); }
+        .btn-ghost:hover { border-color: var(--accent); }
+
+        /* hero */
+        .hero { position: relative; padding-top: clamp(56px, 9vw, 120px); padding-bottom: clamp(40px, 6vw, 80px); overflow: hidden; }
+        .hero::before { content: ""; position: absolute; right: -180px; top: -200px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 181, 71, .16), transparent 65%); pointer-events: none; }
+        .eyebrow { display: inline-block; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); font-size: 13.5px; }
+        h1 { margin-top: 24px; font-family: var(--serif); font-weight: 400; font-size: clamp(52px, 9vw, 112px); line-height: .95; letter-spacing: -.025em; }
+        h1 em, h2 em { color: var(--accent); }
+        .lead { margin-top: 26px; max-width: 620px; font-size: clamp(17px, 2vw, 20px); color: var(--muted); }
+        .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+        .clone { display: flex; align-items: center; gap: 14px; max-width: 640px; margin-top: 26px; padding: 12px 12px 12px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; font-family: var(--mono); font-size: 13.5px; }
+        .clone code { flex: 1; overflow-x: auto; white-space: nowrap; color: #d6d4cd; scrollbar-width: none; }
+        .clone code::-webkit-scrollbar { display: none; }
+        .clone .prompt { color: var(--accent); }
+        .copy { padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 12.5px; cursor: pointer; transition: border-color .15s; }
+        .copy:hover { border-color: var(--accent); }
+
+        .shot { margin-top: clamp(40px, 6vw, 72px); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 40px 100px -30px rgba(0, 0, 0, .9); }
+
+        /* section heads */
+        .kicker { color: var(--accent); font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+        h2 { margin-top: 12px; font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 5vw, 58px); line-height: 1; letter-spacing: -.02em; }
+        .sub { margin-top: 16px; max-width: 600px; color: var(--muted); }
+
+        /* features */
+        .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+        .card { padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; transition: border-color .2s, transform .2s; }
+        .card:hover { border-color: #3a3f4b; transform: translateY(-3px); }
+        .ico { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: rgba(255, 181, 71, .12); color: var(--accent); }
+        .card h3 { margin-top: 18px; font-size: 18px; font-weight: 600; }
+        .card p { margin-top: 8px; color: var(--muted); font-size: 15px; }
+
+        /* steps */
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; counter-reset: step; }
+        .step { position: relative; padding: 28px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+        .step::before { counter-increment: step; content: "0" counter(step); font-family: var(--serif); font-size: 52px; line-height: 1; color: var(--accent); }
+        .step h3 { margin-top: 14px; font-size: 18px; font-weight: 600; }
+        .step p { margin-top: 8px; color: var(--muted); font-size: 15px; }
+        .step pre { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; color: #d6d4cd; overflow-x: auto; }
+
+        /* screenshots */
+        .gallery { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; margin-top: 48px; align-items: start; }
+        .gallery figure { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--surface); }
+        .gallery figcaption { padding: 12px 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+        .stack { display: grid; gap: 16px; }
+        .phone { max-width: 300px; margin: 0 auto; }
+
+        /* tech */
+        .tech { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+        .tech span { padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-family: var(--mono); font-size: 13.5px; }
+        .tech b { color: var(--accent); font-weight: 500; }
+
+        /* security list */
+        .checks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 40px; margin-top: 40px; list-style: none; }
+        .checks li { display: flex; gap: 14px; color: #c9c8c2; font-size: 15px; }
+        .checks svg { color: var(--accent); margin-top: 3px; }
+
+        /* faq */
+        details { border-bottom: 1px solid var(--line); padding: 20px 0; }
+        details:first-of-type { border-top: 1px solid var(--line); margin-top: 40px; }
+        summary { display: flex; justify-content: space-between; gap: 20px; cursor: pointer; list-style: none; font-size: 18px; font-weight: 500; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { content: "+"; color: var(--accent); font-family: var(--mono); font-size: 22px; line-height: 1; transition: transform .2s; }
+        details[open] summary::after { transform: rotate(45deg); }
+        details p { margin-top: 12px; max-width: 760px; color: var(--muted); }
+        details a { color: var(--accent); }
+
+        /* closing cta */
+        .closing { text-align: center; }
+        .closing h2 { margin-left: auto; margin-right: auto; max-width: 760px; }
+        .closing .cta { justify-content: center; }
+        .closing .sub { margin-left: auto; margin-right: auto; }
+
+        footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--muted); font-size: 14px; }
+        .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 30px; }
+        footer a:hover { color: var(--accent); }
+        .foot nav { all: unset; display: flex; gap: 22px; flex-wrap: wrap; }
+
+        /* grid children must be allowed to shrink so code blocks scroll instead of widening the page */
+        .grid3 > *, .steps > *, .gallery > *, .stack > *, .checks > * { min-width: 0; }
+
+        @media (max-width: 900px) {
+            .grid3, .steps { grid-template-columns: 1fr 1fr; }
+            .gallery { grid-template-columns: 1fr; }
+            .links a:not(.gh) { display: none; }
+        }
+        @media (max-width: 620px) {
+            .grid3, .steps, .checks { grid-template-columns: 1fr; }
+            .clone { font-size: 12px; }
+        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+    </style>
+</head>
+
+<body>
+
+<nav aria-label="Primary">
+    <div class="wrap nav-in">
+        <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>PixFind</a>
+        <div class="links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it works</a>
+            <a href="#screenshots">Screenshots</a>
+            <a href="#security">Security</a>
+            <a href="#faq">FAQ</a>
+            <a class="gh" href="https://github.com/Karthigamurugadoss/pixabay-image-downloader" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+                GitHub
+            </a>
+        </div>
+    </div>
+</nav>
+
+<main id="top">
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="wrap">
+            <p class="eyebrow">Free · Open source · Self-hosted</p>
+            <h1>Good pictures,<br><em>quietly</em> found.</h1>
+            <p class="lead">
+                PixFind is a free image search and downloader built on the Pixabay API.
+                Search millions of royalty-free photos, illustrations and vectors, preview them
+                in a clean viewer, and download the full-resolution file in one click.
+            </p>
+
+            <div class="cta">
+                <a class="btn btn-primary" href="https://github.com/Karthigamurugadoss/pixabay-image-downloader" rel="noopener">View on GitHub</a>
+                <a class="btn btn-ghost" href="https://github.com/Karthigamurugadoss/pixabay-image-downloader/releases/latest" rel="noopener">Download v1.0.0</a>
+            </div>
+
+            <div class="clone">
+                <code><span class="prompt">$</span> <span id="cloneCmd">git clone https://github.com/Karthigamurugadoss/pixabay-image-downloader.git</span></code>
+                <button class="copy" id="copyBtn" type="button">Copy</button>
+            </div>
+
+            <div class="shot">
+                <img src="screenshots/pixfind-hero.jpg" width="1440" height="900" alt="PixFind home screen: a search bar over a dimmed mountain photo with Photos, Illustrations and Vectors filters">
+            </div>
+        </div>
+    </header>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="wrap">
+            <p class="kicker">Features</p>
+            <h2>Everything you need to <em>find</em> and <em>keep</em> an image</h2>
+            <p class="sub">A focused tool, not a stock-site clone. Search, look closely, download.</p>
+
+            <div class="grid3">
+                <article class="card">
+                    <div class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5 18 18"/></svg></div>
+                    <h3>Instant image search</h3>
+                    <p>Search the entire Pixabay library of free photos, illustrations and vectors with a single field. Share any search as a link.</p>
+                </article>
+                <article class="card">
+                    <div class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12"/></svg></div>
+                    <h3>Full-resolution download</h3>
+                    <p>One click saves the large image straight to your device, named by its Pixabay ID, with the correct file type.</p>
+                </article>
+                <article class="card">
+                    <div class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 5h14M6 10h8M9 15h2"/></svg></div>
+                    <h3>Type and shape filters</h3>
+                    <p>Narrow results to photos, illustrations or vectors, and to wide or tall pictures, without leaving the page.</p>
+                </article>
+                <article class="card">
+                    <div class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="m3 13 4-4 4 4 2-2 4 4"/></svg></div>
+                    <h3>Built-in viewer</h3>
+                    <p>Open any picture large, see its resolution, views, likes and downloads, and move through results with the arrow keys.</p>
+                </article>
+                <article class="card">
+                    <div class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="6" height="8" rx="1"/><rect x="11" y="3" width="6" height="5" rx="1"/><rect x="3" y="13" width="6" height="4" rx="1"/><rect x="11" y="10" width="6" height="7" rx="1"/></svg></div>
+                    <h3>True-proportion masonry</h3>
+                    <p>Pictures keep their real aspect ratio, so tall and wide shots sit together without awkward cropping or layout jumps.</p>
+                </article>
+                <article class="card">
+                    <div class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5 16.5 5v5c0 4-2.7 6.7-6.5 7.5C6.2 16.700 3.5 14 3.5 10V5L10 2.5Z"/><path d="m7.500 10 2 2 3.500-4"/></svg></div>
+                    <h3>Secure by default</h3>
+                    <p>Your API key never reaches the browser, downloads are restricted to Pixabay, and a strict content security policy is on.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" style="background: linear-gradient(180deg, transparent, rgba(20,22,27,.5), transparent)">
+        <div class="wrap">
+            <p class="kicker">How it works</p>
+            <h2>Running in <em>two minutes</em></h2>
+            <p class="sub">You need Python 3.9+ and a free Pixabay API key.</p>
+
+            <div class="steps">
+                <div class="step">
+                    <h3>Clone and install</h3>
+                    <p>Get the code and install the three dependencies.</p>
+<pre>git clone https://github.com/Karthigamurugadoss/pixabay-image-downloader.git
+cd pixabay-image-downloader
+pip install -r requirements.txt</pre>
+                </div>
+                <div class="step">
+                    <h3>Add your API key</h3>
+                    <p>Copy the example file and paste your key from <a href="https://pixabay.com/api/docs/" rel="noopener" style="color:var(--accent)">pixabay.com/api/docs</a>.</p>
+<pre>cp .env.example .env
+# edit .env:
+PIXABAY_API_KEY=your_key</pre>
+                </div>
+                <div class="step">
+                    <h3>Run and search</h3>
+                    <p>Start the server and open it in your browser.</p>
+<pre>python app.py
+# open
+http://127.0.0.1:5000</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots -->
+    <section id="screenshots">
+        <div class="wrap">
+            <p class="kicker">Screenshots</p>
+            <h2>Designed to get <em>out of the way</em></h2>
+            <p class="sub">A dark, photo-first interface that works from phone to ultrawide.</p>
+
+            <div class="gallery">
+                <div class="stack">
+                    <figure>
+                        <img src="screenshots/pixfind-results.jpg" width="1440" height="900" loading="lazy" alt="PixFind results: a four-column masonry grid of mountain photos with a hover overlay and download button">
+                        <figcaption>Masonry results with hover download and a compact sticky search.</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="screenshots/pixfind-viewer.jpg" width="1440" height="900" loading="lazy" alt="PixFind picture viewer showing a mountain at sunset with resolution, views, likes and a Download full size button">
+                        <figcaption>The viewer: full-size preview, stats and one-click full-resolution download.</figcaption>
+                    </figure>
+                </div>
+                <figure class="phone">
+                    <img src="screenshots/pixfind-mobile.jpg" width="780" height="1688" loading="lazy" alt="PixFind on a phone: stacked search bar, filters and a single column of results">
+                    <figcaption>Responsive on mobile.</figcaption>
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech stack -->
+    <section id="tech-stack" style="padding-top:0">
+        <div class="wrap">
+            <p class="kicker">Tech stack</p>
+            <h2>Small, readable, <em>no build step</em></h2>
+            <div class="tech">
+                <span><b>Python</b> 3.9+</span>
+                <span><b>Flask</b> backend</span>
+                <span><b>Pixabay</b> API</span>
+                <span><b>Requests</b></span>
+                <span><b>python-dotenv</b></span>
+                <span><b>Vanilla</b> JS &amp; CSS</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security -->
+    <section id="security" style="padding-top:0">
+        <div class="wrap">
+            <p class="kicker">Security</p>
+            <h2>Careful with <em>your key</em></h2>
+            <p class="sub">PixFind is small enough to audit in an afternoon, and it is built so there is little to get wrong.</p>
+
+            <ul class="checks">
+                <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8"/></svg><span><strong>API key stays server-side.</strong> Read from <code>.env</code>, never sent to the browser or included in error messages.</span></li>
+                <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8"/></svg><span><strong>Not an open proxy.</strong> Downloads only accept HTTPS Pixabay image URLs, with no redirects and a 30 MB limit.</span></li>
+                <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8"/></svg><span><strong>Strict CSP and headers.</strong> Content-Security-Policy, nosniff, frame denial, no-referrer and a locked-down permissions policy.</span></li>
+                <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8"/></svg><span><strong>No HTML injection.</strong> Results are built with DOM APIs, never by pasting untrusted text into markup.</span></li>
+                <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8"/></svg><span><strong>Validated input.</strong> Filters are allow-listed, queries and page numbers are bounded.</span></li>
+                <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10 4 4 8-8"/></svg><span><strong>Audited dependencies.</strong> Debug mode is off by default and <code>pip-audit</code> reports no known vulnerabilities.</span></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" style="padding-top:0">
+        <div class="wrap">
+            <p class="kicker">FAQ</p>
+            <h2>Questions, <em>answered</em></h2>
+
+            <details>
+                <summary>Is PixFind free?</summary>
+                <p>Yes. PixFind is open source under the MIT license, and the Pixabay API is free to use with a free API key.</p>
+            </details>
+            <details>
+                <summary>How do I get a Pixabay API key?</summary>
+                <p>Create a free account on <a href="https://pixabay.com/api/docs/" rel="noopener">Pixabay</a>, open the API documentation page and copy your key. Paste it into a <code>.env</code> file as <code>PIXABAY_API_KEY</code>, then start the app.</p>
+            </details>
+            <details>
+                <summary>Can I use the downloaded images commercially?</summary>
+                <p>Pixabay content falls under the Pixabay Content License, which generally allows free commercial use without attribution. Always check the details on the picture's Pixabay page for restrictions such as identifiable people or trademarks.</p>
+            </details>
+            <details>
+                <summary>Is my API key safe?</summary>
+                <p>The key is only read on the server and is never exposed to the browser. The <code>.env</code> file is git-ignored, error messages never contain it, and the download route only fetches Pixabay image URLs. See <a href="https://github.com/Karthigamurugadoss/pixabay-image-downloader/blob/main/SECURITY.md" rel="noopener">SECURITY.md</a> for details.</p>
+            </details>
+            <details>
+                <summary>Why are results capped at 500?</summary>
+                <p>The Pixabay API only returns the first 500 hits for any query. Use more specific search terms or the type and shape filters to narrow things down.</p>
+            </details>
+            <details>
+                <summary>Can I host it publicly?</summary>
+                <p>PixFind is designed for local or private use. If you deploy it, run it behind a production WSGI server such as gunicorn with HTTPS and add rate limiting, because the Pixabay API allows 100 requests per minute per key.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="closing" style="padding-top:0">
+        <div class="wrap">
+            <h2>Find your next <em>picture</em></h2>
+            <p class="sub">Free, open source and yours to run. A star on GitHub helps other people find it too.</p>
+            <div class="cta">
+                <a class="btn btn-primary" href="https://github.com/Karthigamurugadoss/pixabay-image-downloader" rel="noopener">Star on GitHub</a>
+                <a class="btn btn-ghost" href="https://github.com/Karthigamurugadoss/pixabay-image-downloader/releases/latest" rel="noopener">Download v1.0.0</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="wrap foot">
+        <span>Built by <a href="https://github.com/Karthigamurugadoss" rel="noopener">Karthigamurugadoss</a> · <a href="https://github.com/Karthigamurugadoss/pixabay-image-downloader/blob/main/LICENSE" rel="noopener">MIT License</a></span>
+        <span>Images courtesy of <a href="https://pixabay.com" rel="noopener">Pixabay</a>. Not affiliated with Pixabay.</span>
+    </div>
+</footer>
+
+<script>
+    document.getElementById("copyBtn").addEventListener("click", function () {
+        var btn = this;
+        var text = document.getElementById("cloneCmd").textContent;
+        var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1600); };
+        if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done); } else { done(); }
+    });
+</script>
+
+</body>
+</html>

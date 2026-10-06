@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0b0c0f">
+
+    <title>PixFind — Free pictures, found</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header class="topbar" id="topbar">
+
+        <a class="wordmark" href="/">
+            <span class="wordmark-mark" aria-hidden="true"></span>PixFind
+        </a>
+
+        <form id="miniForm" class="mini-search" role="search" autocomplete="off">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 13.5 18 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <input type="text" id="miniInput" placeholder="Search pictures" aria-label="Search pictures" spellcheck="false">
+        </form>
+
+        <p class="topbar-note">
+            <span class="hide-small">Free images via Pixabay</span>
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <section class="hero" id="hero">
+
+            <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
+
+            <div class="hero-inner">
+
+                <p class="eyebrow">Free · No sign-up<span class="hide-small"> · Full resolution</span></p>
+
+                <h1>
+                    Good pictures,<br>
+                    <em>quietly</em> found.
+                </h1>
+
+                <form id="searchForm" class="search" role="search" autocomplete="off">
+
+                    <svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 13.5 18 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+                    <label class="visually-hidden" for="searchInput">Search pictures</label>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search for anything…"
+                        spellcheck="false"
+                    >
+
+                    <kbd class="slash" aria-hidden="true">/</kbd>
+
+                    <button type="submit" class="search-go">Search</button>
+
+                </form>
+
+                <div class="controls">
+
+                    <div class="segmented" role="group" aria-label="Type">
+                        <button type="button" class="seg is-active" data-filter="type" data-value="photo">Photos</button>
+                        <button type="button" class="seg" data-filter="type" data-value="illustration">Illustrations</button>
+                        <button type="button" class="seg" data-filter="type" data-value="vector">Vectors</button>
+                    </div>
+
+                    <div class="segmented" role="group" aria-label="Orientation">
+                        <button type="button" class="seg is-active" data-filter="orientation" data-value="all">Any shape</button>
+                        <button type="button" class="seg" data-filter="orientation" data-value="horizontal">Wide</button>
+                        <button type="button" class="seg" data-filter="orientation" data-value="vertical">Tall</button>
+                    </div>
+
+                </div>
+
+                <p class="try">
+                    <span class="try-label">Popular</span>
+                    <button type="button" class="try-link">fog</button>
+                    <button type="button" class="try-link">brutalist</button>
+                    <button type="button" class="try-link">monstera</button>
+                    <button type="button" class="try-link">night market</button>
+                    <button type="button" class="try-link">desert road</button>
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="results" aria-live="polite">
+
+            <div class="results-head">
+                <h2 id="resultsTitle"></h2>
+                <span id="resultCount" class="count"></span>
+            </div>
+
+            <p id="message" class="message" hidden></p>
+
+            <div id="imageGrid" class="grid"></div>
+
+            <div class="more">
+                <button id="loadMoreButton" class="more-button" type="button" hidden>
+                    Show more pictures
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="colophon">
+        <span class="wordmark small"><span class="wordmark-mark" aria-hidden="true"></span>PixFind</span>
+        <span>All images courtesy of <a href="https://pixabay.com" target="_blank" rel="noopener">Pixabay</a> · © 2026</span>
+    </footer>
+
+
+    <!-- Viewer -->
+
+    <dialog id="viewer" class="viewer" aria-label="Picture viewer">
+
+        <button type="button" class="viewer-close" id="viewerClose" aria-label="Close viewer">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+
+        <div class="viewer-stage">
+            <button type="button" class="viewer-nav prev" id="viewerPrev" aria-label="Previous picture">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <img id="viewerImage" alt="">
+            <button type="button" class="viewer-nav next" id="viewerNext" aria-label="Next picture">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+
+        <aside class="viewer-info">
+
+            <p class="count" id="viewerIndex"></p>
+
+            <h3 id="viewerTags"></h3>
+
+            <p class="viewer-by">Photo by <strong id="viewerUser"></strong></p>
+
+            <dl>
+                <div><dt>Resolution</dt><dd id="viewerSize"></dd></div>
+                <div><dt>Views</dt><dd id="viewerViews"></dd></div>
+                <div><dt>Likes</dt><dd id="viewerLikes"></dd></div>
+                <div><dt>Downloads</dt><dd id="viewerDownloads"></dd></div>
+            </dl>
+
+            <a id="viewerDownload" class="download-main" href="#">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Download full size
+            </a>
+            <a id="viewerSource" class="source-link" href="#" target="_blank" rel="noopener">View on Pixabay ↗</a>
+
+        </aside>
+
+    </dialog>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

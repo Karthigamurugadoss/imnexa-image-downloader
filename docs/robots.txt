@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://karthigamurugadoss.github.io/pixabay-image-downloader/sitemap.xml
