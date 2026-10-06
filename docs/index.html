@@ -8,7 +8,7 @@
     <meta name="keywords" content="image search, image downloader, photo downloader, free image search, royalty free images, stock photo downloader, flask app, python, open source, self-hosted, image search engine, vector downloader, illustration downloader, imnexa">
     <meta name="author" content="Karthigamurugadoss">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#0b0c0f">
+    <meta name="theme-color" content="#080c14">
     <meta name="color-scheme" content="dark">
     <link rel="canonical" href="https://karthigamurugadoss.github.io/imnexa-image-downloader/">
 
@@ -91,14 +91,14 @@
 
     <style>
         :root {
-            --bg: #0b0c0f;
-            --surface: #14161b;
-            --surface-2: #1c1f26;
-            --line: #272b34;
-            --text: #ecebe6;
-            --muted: #8c8f9a;
-            --accent: #ffb547;
-            --accent-ink: #1a1205;
+            --bg: #080c14;
+            --surface: #101622;
+            --surface-2: #182030;
+            --line: #232c3d;
+            --text: #e8eef6;
+            --muted: #8693a8;
+            --accent: #3dd6c0;
+            --accent-ink: #04140f;
             --serif: "Instrument Serif", Georgia, serif;
             --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
             --mono: "Geist Mono", ui-monospace, Consolas, monospace;
@@ -118,10 +118,10 @@
         section { padding: clamp(56px, 9vw, 110px) 0; }
 
         /* nav */
-        nav { position: sticky; top: 0; z-index: 30; background: rgba(11, 12, 15, 0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+        nav { position: sticky; top: 0; z-index: 30; background: rgba(8, 12, 20, 0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
         .nav-in { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
         .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 28px; text-decoration: none; line-height: 1; }
-        .mark { width: 12px; height: 12px; border-radius: 3px; background: var(--accent); transform: rotate(45deg); box-shadow: 0 0 18px rgba(255, 181, 71, .55); }
+        .mark { width: 12px; height: 12px; border-radius: 3px; background: var(--accent); transform: rotate(45deg); box-shadow: 0 0 18px rgba(61, 214, 192, .55); }
         .links { display: flex; align-items: center; gap: 28px; font-size: 14.5px; color: var(--muted); }
         .links a { text-decoration: none; transition: color .15s; }
         .links a:hover { color: var(--text); }
@@ -132,20 +132,20 @@
         .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 15px; text-decoration: none; transition: transform .15s, background .15s, border-color .15s; }
         .btn:active { transform: scale(.97); }
         .btn-primary { background: var(--accent); color: var(--accent-ink); }
-        .btn-primary:hover { background: #ffc470; }
+        .btn-primary:hover { background: #6ee7d4; }
         .btn-ghost { border: 1px solid var(--line); background: var(--surface); }
         .btn-ghost:hover { border-color: var(--accent); }
 
         /* hero */
         .hero { position: relative; padding-top: clamp(56px, 9vw, 120px); padding-bottom: clamp(40px, 6vw, 80px); overflow: hidden; }
-        .hero::before { content: ""; position: absolute; right: -180px; top: -200px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 181, 71, .16), transparent 65%); pointer-events: none; }
+        .hero::before { content: ""; position: absolute; right: -180px; top: -200px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle, rgba(61, 214, 192, .16), transparent 65%); pointer-events: none; }
         .eyebrow { display: inline-block; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); font-size: 13.5px; }
         h1 { margin-top: 24px; font-family: var(--serif); font-weight: 400; font-size: clamp(52px, 9vw, 112px); line-height: .95; letter-spacing: -.025em; }
         h1 em, h2 em { color: var(--accent); }
         .lead { margin-top: 26px; max-width: 620px; font-size: clamp(17px, 2vw, 20px); color: var(--muted); }
         .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
         .clone { display: flex; align-items: center; gap: 14px; max-width: 640px; margin-top: 26px; padding: 12px 12px 12px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; font-family: var(--mono); font-size: 13.5px; }
-        .clone code { flex: 1; overflow-x: auto; white-space: nowrap; color: #d6d4cd; scrollbar-width: none; }
+        .clone code { flex: 1; overflow-x: auto; white-space: nowrap; color: #cfd8e6; scrollbar-width: none; }
         .clone code::-webkit-scrollbar { display: none; }
         .clone .prompt { color: var(--accent); }
         .copy { padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 12.5px; cursor: pointer; transition: border-color .15s; }
@@ -161,8 +161,8 @@
         /* features */
         .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
         .card { padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; transition: border-color .2s, transform .2s; }
-        .card:hover { border-color: #3a3f4b; transform: translateY(-3px); }
-        .ico { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: rgba(255, 181, 71, .12); color: var(--accent); }
+        .card:hover { border-color: #34405a; transform: translateY(-3px); }
+        .ico { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: rgba(61, 214, 192, .12); color: var(--accent); }
         .card h3 { margin-top: 18px; font-size: 18px; font-weight: 600; }
         .card p { margin-top: 8px; color: var(--muted); font-size: 15px; }
 
@@ -172,7 +172,7 @@
         .step::before { counter-increment: step; content: "0" counter(step); font-family: var(--serif); font-size: 52px; line-height: 1; color: var(--accent); }
         .step h3 { margin-top: 14px; font-size: 18px; font-weight: 600; }
         .step p { margin-top: 8px; color: var(--muted); font-size: 15px; }
-        .step pre { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; color: #d6d4cd; overflow-x: auto; }
+        .step pre { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; color: #cfd8e6; overflow-x: auto; }
 
         /* screenshots */
         .gallery { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; margin-top: 48px; align-items: start; }
@@ -188,7 +188,7 @@
 
         /* security list */
         .checks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 40px; margin-top: 40px; list-style: none; }
-        .checks li { display: flex; gap: 14px; color: #c9c8c2; font-size: 15px; }
+        .checks li { display: flex; gap: 14px; color: #c3cddc; font-size: 15px; }
         .checks svg { color: var(--accent); margin-top: 3px; }
 
         /* faq */
@@ -319,7 +319,7 @@
     </section>
 
     <!-- How it works -->
-    <section id="how-it-works" style="background: linear-gradient(180deg, transparent, rgba(20,22,27,.5), transparent)">
+    <section id="how-it-works" style="background: linear-gradient(180deg, transparent, rgba(16, 22, 34,.5), transparent)">
         <div class="wrap">
             <p class="kicker">How it works</p>
             <h2>Running in <em>two minutes</em></h2>

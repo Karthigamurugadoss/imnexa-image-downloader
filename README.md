@@ -15,9 +15,9 @@
   <a href="https://flask.palletsprojects.com"><img src="https://img.shields.io/badge/Flask-Web_Framework-000000?logo=flask&logoColor=white" alt="Flask"></a>
   <a href="https://pixabay.com/api/docs/"><img src="https://img.shields.io/badge/Pixabay-API-48a14d?logo=pixabay&logoColor=white" alt="Pixabay API"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
-  <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/releases/latest"><img src="https://img.shields.io/github/v/release/Karthigamurugadoss/imnexa-image-downloader?color=ffb547" alt="Latest release"></a>
+  <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/releases/latest"><img src="https://img.shields.io/github/v/release/Karthigamurugadoss/imnexa-image-downloader?color=3dd6c0" alt="Latest release"></a>
   <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/stargazers"><img src="https://img.shields.io/github/stars/Karthigamurugadoss/imnexa-image-downloader?style=social" alt="Stars"></a>
-  <a href="https://karthigamurugadoss.github.io/imnexa-image-downloader/"><img src="https://img.shields.io/badge/Website-Live-ffb547?logo=googlechrome&logoColor=white" alt="Website"></a>
+  <a href="https://karthigamurugadoss.github.io/imnexa-image-downloader/"><img src="https://img.shields.io/badge/Website-Live-3dd6c0?logo=googlechrome&logoColor=white" alt="Website"></a>
 </p>
 
 <p align="center">
@@ -265,7 +265,7 @@ Built by **[Karthigamurugadoss](https://github.com/Karthigamurugadoss)**
 
 <p align="center">
   <br>
-  <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/stargazers"><img src="https://img.shields.io/github/stars/Karthigamurugadoss/imnexa-image-downloader?style=for-the-badge&logo=github&label=Star%20this%20repo&color=ffb547" alt="Star"></a>
+  <a href="https://github.com/Karthigamurugadoss/imnexa-image-downloader/stargazers"><img src="https://img.shields.io/github/stars/Karthigamurugadoss/imnexa-image-downloader?style=for-the-badge&logo=github&label=Star%20this%20repo&color=3dd6c0" alt="Star"></a>
   <br><br>
   <sub>If Imnexa saved you time, a star helps others find it too.</sub>
 </p>
